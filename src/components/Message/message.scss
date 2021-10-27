@@ -1,0 +1,18 @@
+$header-text-color: #b84e4e;
+
+h3 {
+    padding-top: 25px;
+    opacity: 0.8; 
+
+}
+
+span {
+    color: $header-text-color;
+}
+
+button {
+    width: 50px;
+    border-radius: 5px;
+    border: none;
+    margin: 10px;
+}

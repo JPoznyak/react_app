@@ -1,22 +1,53 @@
-import { useState } from "react";
-import { Message } from "./components/Message/Message";
-import { Counter } from "./components/Counter/Counter";
+import { useState, useEffect, useCallback } from "react";
+// import { Message } from "./components/Message/Message";
+import { Form } from "./components/Form/Form";
+import { MessageList } from "./components/MessageList/MessageList";
+import { v4 as uuidv4 } from 'uuid';
 import "./App.scss";
 
-function App() {
-  const [text, setText] = useState("I am a GB student");
+const dummyData = [
+  {
+    author: "Jen",
+    text: "Hello friends!",
+    id: uuidv4()
+  }
+];
 
-  const handleClick = () => {
-    alert("click");
-    setText(Math.floor(Math.random()*100));
-  };
+const botMessage = [
+  {
+    author: "Bot",
+    text: "Hi Bro, I am bot!",
+    id: uuidv4()
+  }
+];
+
+function App() {
+  const [messages, setMessages] = useState(dummyData);
+
+  const handleSendMessage = useCallback((newMessage) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  }, []);
+
+  useEffect(() => {
+    if(messages.length && messages[messages.length - 1].author !== "Bot") {
+      const timeout = setTimeout(
+        () =>
+          handleSendMessage({   //  как передать botMessage?
+            author: "Bot",
+            text: "Hi Bro, I am a bot",
+            id: uuidv4()
+          }),
+        2000
+      );
+      return () => clearTimeout(timeout);
+    }
+  }, [messages]);
 
   return (
     <div className="App">
       <header className="App-header">
-        <Message message={text} onMessageClick={handleClick} />
-        <p>My First React App</p>
-        <Counter />
+        <MessageList messages = {messages} />
+        <Form sendMessage={handleSendMessage} />
       </header>
     </div>
   );

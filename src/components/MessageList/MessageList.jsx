@@ -2,7 +2,7 @@ import React from "react";
 import "./messageList.scss";
 
 export const MessageList = ({ messages }) => (
-    <div className="message-form">
+    <div>
          {messages.map((mes) => (
             <div className="message" key={mes.id}>
                 <span>{mes.author} : </span>

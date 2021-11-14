@@ -1,60 +1,34 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { Form } from "./components/Form/Form";
-import { MessageList } from "./components/MessageList/MessageList";
+import React from "react";
+import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 import { ChatList } from "./components/ChatList/ChatList";
-import { v4 as uuidv4 } from 'uuid';
-import { AUTHORS } from "./utils/constants";
+import Chats from "./components/Chats/Chats";
+import { HomePage } from "./components/Home/HomePage";
+import { Navbar, Container, Nav } from 'react-bootstrap';
 import "./App.scss";
 
+export const App = () => (
+ 
+  <BrowserRouter>
+    <Navbar className="menu" bg="light" variant="light">
+        <Container>
+        <Nav>
+          <Nav.Link> 
+            <Link to="/">HomePage</Link>
+          </Nav.Link>
+          <Nav.Link>
+            <Link to="/chats">Chats</Link>
+          </Nav.Link>
+        </Nav>
+        </Container>
+    </Navbar> 
 
-const dummyData = [
-  {
-    author: AUTHORS.user,
-    text: "Hello friends!",
-    id: uuidv4()
-  }
-];
-
-function App() {
-  const [messages, setMessages] = useState(dummyData);
-  const parentRef = useRef();
-
-  const handleSendMessage = useCallback((newMessage) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-  }, []);
-
-  useEffect(() => {
-    if(messages.length && messages[messages.length - 1].author !== AUTHORS.bot) {
-      const timeout = setTimeout(
-        () =>
-          handleSendMessage({   
-            author: AUTHORS.bot,
-            text: "Hi Bro, I am a bot",
-            id: uuidv4()
-          }),
-        2000
-      );
-      return () => clearTimeout(timeout);
-    }
-  }, [messages]);
-
-  function Title() {
-    return <p className="title">My awesome chat app</p>
-  }
-  
-
-  return (
-    <>
-    <Title />
-    <div className="App" ref={parentRef}>
-      <ChatList />
-      <div className="App_main">
-        <MessageList messages = {messages} />
-        <Form sendMessage={handleSendMessage} />
-      </div>
-    </div>
-    </>
-    );
-}
-
-export default App;
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="chats">
+        <Route index element={<ChatList />} />
+        <Route path=":chatId" element={<Chats />} />
+      </Route>
+      <Route path="*" element={<h3>404</h3>} />
+    </Routes>
+  </BrowserRouter>
+);

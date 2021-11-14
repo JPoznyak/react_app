@@ -1,0 +1,36 @@
+.title {
+    color: #2f51a8;
+    font-weight: 700;
+    font-size: 2rem;
+    opacity: 0.5;
+    box-sizing: border-box;
+    margin: 0;
+    padding-top: 20px;
+    text-align: center;
+}
+
+.App {
+  background-color: #93b8c7;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  padding-top: 20px;
+
+  h3 {
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+
+  &_charts {
+    margin-right: 20px;
+    width: 300px;
+    color: #2f51a8;
+  }
+
+  &_main {
+    padding-left: 20px;
+    font-size: calc(10px + 1vmin);
+    color: #ffffff;
+  }
+}

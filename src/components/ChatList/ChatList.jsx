@@ -1,6 +1,7 @@
 import React from "react";
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, InputGroup, FormControl} from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
+// import { Button } from '../Button/Button';
 import "./chatList.scss";
 
 const chatList = [
@@ -20,10 +21,10 @@ const chatList = [
 
   export const ChatList = () => {
     return (
-        <>
         <ListGroup className="list" variant="flush">
         <h4>List of chats</h4>
             {chatList.map((chat) => (
+            <>
             <ListGroup.Item>
                 <NavLink
                     style={({ isActive }) => ({ color: isActive ? "red" : "blue" })}
@@ -31,8 +32,23 @@ const chatList = [
                 >
                     {chat.name}
                 </NavLink>
+                <button className="del-btn" onClick={() => {}}>Delete</button>
+                {/* <Button type="submit" onClick={() => {}}>
+                Delete
+                </Button> */}
             </ListGroup.Item>
+            </>
+        
             ))}
         </ListGroup>
-        </>
+        
+    
+//     <InputGroup>
+//     <FormControl
+//       placeholder="Chat name"
+//       />
+//       <Button>Add chat</Button>
+//   </InputGroup>
+
+
     )}

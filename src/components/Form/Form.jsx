@@ -6,43 +6,56 @@ import { AUTHORS } from '../../utils/constants';
 import { FormControl } from 'react-bootstrap';
 import { Input } from '../Input/Input';
 import { Button } from '../Button/Button';
+import { FormWithRender } from '../FormWithRender';
 
 
 export const Form = ({ sendMessage }) => {
-  const [value, setValue] = useState('');
-  const inputRef = useRef();
+//   const [value, setValue] = useState('');
+  const inputRef = useRef(null);
 
 //   const handleChange = (e) => {
 //     setValue(e.target.value);
 //   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSendMessage = (value) => {
+    // e.preventDefault();
     sendMessage({
         id: uuidv4(),
         author: AUTHORS.user,
         text: value,
     });
-    inputRef.current?.focus();
-    setValue('');
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     sendMessage({
+//         id: uuidv4(),
+//         author: AUTHORS.user,
+//         text: value,
+//     });
+    // inputRef.current?.focus();
+    // setValue('');
   };
 
   useEffect(() => {
-    inputRef.current?.focus()
+    inputRef.current?.focus();
   },[])
 
 return (
-    <form onSubmit={handleSubmit}>
-      <Input
-        render={({ value, handleChange }) => (
-            <FormControl className="text-field" value={value} onChange={handleChange} />
+    <FormWithRender 
+        onSubmit={handleSendMessage}
+        render={({ value, handleChange, handleSubmit }) => (
+            <>
+            <FormControl 
+                className="text-field" 
+                value={value} 
+                onChange={handleChange}
+                ref={inputRef} 
+            />
+            <Button type="submit" onPress={handleSubmit}>
+                Send
+            </Button>
+            </>
         )}
       />
-        {/* <Button className="submit-btn" variant="primary" as="input" type="submit" value="Send" />{' '} */}
-      {/* <Button variant="outlined" type="submit">
-        Send
-      </Button> */}
-      <Button type="submit" onPress={handleSubmit}>Send</Button>
-    </form>
   );
 };

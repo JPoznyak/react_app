@@ -41,14 +41,5 @@ const chatList = [
         
             ))}
         </ListGroup>
-        
-    
-//     <InputGroup>
-//     <FormControl
-//       placeholder="Chat name"
-//       />
-//       <Button>Add chat</Button>
-//   </InputGroup>
-
 
     )}

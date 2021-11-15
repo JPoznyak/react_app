@@ -2,38 +2,27 @@ import React, { useRef, useEffect, useState } from 'react';
 import "./form.scss";
 import { v4 as uuidv4 } from 'uuid';
 import { AUTHORS } from '../../utils/constants';
-// import { Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
 import { Input } from '../Input/Input';
-import { Button } from '../Button/Button';
-import { FormWithRender } from '../FormWithRender';
-
 
 export const Form = ({ sendMessage }) => {
-//   const [value, setValue] = useState('');
-  const inputRef = useRef(null);
+  const [value, setValue] = useState("");
+  const inputRef = useRef();
 
-//   const handleChange = (e) => {
-//     setValue(e.target.value);
-//   }
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  }
 
-const handleSendMessage = (value) => {
-    // e.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
     sendMessage({
         id: uuidv4(),
         author: AUTHORS.user,
         text: value,
     });
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     sendMessage({
-//         id: uuidv4(),
-//         author: AUTHORS.user,
-//         text: value,
-//     });
-    // inputRef.current?.focus();
-    // setValue('');
+    inputRef.current?.focus();
+    setValue("");
   };
 
   useEffect(() => {
@@ -41,21 +30,12 @@ const handleSendMessage = (value) => {
   },[])
 
 return (
-    <FormWithRender 
-        onSubmit={handleSendMessage}
-        render={({ value, handleChange, handleSubmit }) => (
-            <>
-            <FormControl 
-                className="text-field" 
-                value={value} 
-                onChange={handleChange}
-                ref={inputRef} 
-            />
-            <Button type="submit" onPress={handleSubmit}>
-                Send
-            </Button>
-            </>
-        )}
-      />
+    <form onSubmit={handleSubmit}>
+        <FormControl value={value} onChange={handleChange} />
+
+        <Button className="my-btn" type="submit">
+        Send
+        </Button>
+    </form>
   );
 };

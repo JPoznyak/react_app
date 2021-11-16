@@ -5,7 +5,8 @@ import { ChatList } from "../ChatList/ChatList";
 import { AUTHORS } from "../../utils/constants";
 import { v4 as uuidv4 } from 'uuid';
 import "./chats.scss";
-import { Navigate, useParams } from "react-router";
+import { Navigate, useParams} from "react-router";
+import { Container } from 'react-bootstrap';
 
 const dummyData = {
     chat1: [
@@ -64,16 +65,18 @@ function Chats() {
     };
 
   return (
+      <Container>
     <>
     <Title />
     <div className="App" ref={parentRef}>
         <ChatList />
         <div>
-            <MessageList messages={messages[chatId]} />
             <Form sendMessage={handleSendMessage} />
+            <MessageList messages={messages[chatId]} />
         </div>
     </div>
     </>
+    </Container>
   );
 }
 

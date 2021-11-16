@@ -31,8 +31,7 @@ export const Form = ({ sendMessage }) => {
 
 return (
     <form onSubmit={handleSubmit}>
-        <FormControl value={value} onChange={handleChange} />
-
+        <FormControl className="text-field" value={value} onChange={handleChange} />
         <Button className="my-btn" type="submit">
         Send
         </Button>

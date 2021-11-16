@@ -2,6 +2,7 @@ import React from "react";
 import { ListGroup, InputGroup, FormControl} from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 // import { Button } from '../Button/Button';
+import { Container } from 'react-bootstrap';
 import "./chatList.scss";
 
 const chatList = [
@@ -20,14 +21,22 @@ const chatList = [
   ];
 
   export const ChatList = () => {
-    return (
+
+    
+
+return (
+    <Container>
+        <h4 className="chatsTitle">List of chats</h4>
+        <form className="list">
+            <FormControl className="textField" placeholder="Enter chat name" onChange={() => {}} />
+            <button className="add-btn" onClick={() => {}}>Add chat</button>
+        </form>
         <ListGroup className="list" variant="flush">
-        <h4>List of chats</h4>
             {chatList.map((chat) => (
             <>
-            <ListGroup.Item>
+            <ListGroup.Item className="group">
                 <NavLink
-                    style={({ isActive }) => ({ color: isActive ? "red" : "blue" })}
+                    style={({ isActive }) => ({ color: isActive ? "#a83d3d" : "grey" })}
                     to={`/chats/${chat.id}`}
                 >
                     {chat.name}
@@ -41,5 +50,5 @@ const chatList = [
         
             ))}
         </ListGroup>
-
-    )}
+    </Container>
+)}

@@ -1,5 +1,8 @@
 import React from "react";
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, InputGroup, FormControl} from 'react-bootstrap';
+import { NavLink } from "react-router-dom";
+// import { Button } from '../Button/Button';
+import { Container } from 'react-bootstrap';
 import "./chatList.scss";
 
 const chatList = [
@@ -17,27 +20,35 @@ const chatList = [
     },
   ];
 
-// export const MessageList = ({ messages }) => (
-//     <div>
-//          {messages.map((mes) => (
-//             <div className="message" key={mes.id}>
-//                 <span>{mes.author} : </span>
-//                 <span>{mes.text}</span>
-//             </div>
-//         ))}   
-//     </div>
-// );
-
-
   export const ChatList = () => {
-    return (
-        <>
+
+    
+
+return (
+    <Container>
+        <h4 className="chatsTitle">List of chats</h4>
+        <form className="list">
+            <FormControl className="textField" placeholder="Enter chat name" onChange={() => {}} />
+            <button className="add-btn" onClick={() => {}}>Add chat</button>
+        </form>
         <ListGroup className="list" variant="flush">
-        <h4>List of chats</h4>
             {chatList.map((chat) => (
-            <ListGroup.Item>{chat.name}
+            <>
+            <ListGroup.Item className="group">
+                <NavLink
+                    style={({ isActive }) => ({ color: isActive ? "#a83d3d" : "grey" })}
+                    to={`/chats/${chat.id}`}
+                >
+                    {chat.name}
+                </NavLink>
+                <button className="del-btn" onClick={() => {}}>Delete</button>
+                {/* <Button type="submit" onClick={() => {}}>
+                Delete
+                </Button> */}
             </ListGroup.Item>
+            </>
+        
             ))}
         </ListGroup>
-        </>
-    )}
+    </Container>
+)}

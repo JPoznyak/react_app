@@ -2,8 +2,47 @@ h4 {
     padding-bottom: 10px;
   }
 
-  .list {
-    margin-right: 20px;
+.list {
     width: 300px;
     color: #2f51a8;
-  }
+    background: none;
+    }
+
+.del-btn {
+    float: right;
+    height: 30px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    background-color: light-grey;
+    color: grey;
+}
+
+.add-btn {
+    float: right;
+    height: 30px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    background-color: light-grey;
+    color: grey;
+    margin-bottom: 30px;
+}
+
+
+.textField {
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.group {
+    display: flex;
+    justify-content: space-between;
+    background: transparent;
+    padding: 10px 0px;
+}
+
+.chatsTitle {
+    width: 300px;
+    color: #2f51a8;
+    opacity: 0.5;
+    margin-top: 20px;
+}

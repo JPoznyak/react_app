@@ -1,28 +1,11 @@
 import React from "react";
-import { ListGroup, InputGroup, FormControl} from 'react-bootstrap';
+import { ListGroup, FormControl} from 'react-bootstrap';
 import { NavLink } from "react-router-dom";
 // import { Button } from '../Button/Button';
 import { Container } from 'react-bootstrap';
 import "./chatList.scss";
 
-const chatList = [
-    {
-      name: "Cras justo odio",
-      id: "chat1",
-    },
-    {
-      name: "Morbi leo risus",
-      id: "chat2",
-    },
-    {
-      name: "Porta ac consectetur ac",
-      id: "chat3",
-    },
-  ];
-
-  export const ChatList = () => {
-
-    
+export const ChatList = ({ chatList }) => {
 
 return (
     <Container>
@@ -36,7 +19,7 @@ return (
             <>
             <ListGroup.Item className="group">
                 <NavLink
-                    style={({ isActive }) => ({ color: isActive ? "#a83d3d" : "grey" })}
+                    style={({ isActive }) => ({ color: isActive ? "#a83d3d" : "#5c4a4a" })}
                     to={`/chats/${chat.id}`}
                 >
                     {chat.name}

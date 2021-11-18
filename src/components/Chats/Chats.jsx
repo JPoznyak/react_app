@@ -8,7 +8,7 @@ import "./chats.scss";
 import { Navigate, useParams} from "react-router";
 import { Container } from 'react-bootstrap';
 
-const dummyData = {
+const dummyMessages = {
     chat1: [
         {
             author: AUTHORS.user,
@@ -24,10 +24,26 @@ const dummyData = {
     chat3: [],
 };
 
+const initialChatList = [
+    {
+      name: "Cras justo odio",
+      id: "chat1",
+    },
+    {
+      name: "Morbi leo risus",
+      id: "chat2",
+    },
+    {
+      name: "Porta ac consectetur ac",
+      id: "chat3",
+    },
+  ];
+
 function Chats() {
   const { chatId } = useParams();
 
-  const [messages, setMessages] = useState(dummyData);
+  const [messages, setMessages] = useState(dummyMessages);
+  const [chatList, setChatList] = useState(initialChatList);
   const parentRef = useRef();
 
   const handleSendMessage = useCallback((newMessage) => {
@@ -69,7 +85,7 @@ function Chats() {
     <>
     <Title />
     <div className="App" ref={parentRef}>
-        <ChatList />
+        <ChatList chatList={chatList} />
         <div>
             <Form sendMessage={handleSendMessage} />
             <MessageList messages={messages[chatId]} />

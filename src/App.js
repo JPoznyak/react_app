@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { ChatList } from "./components/ChatList/ChatList";
 import Chats from "./components/Chats/Chats";
 import { HomePage } from "./components/Home/HomePage";
+import { v4 as uuidv4 } from 'uuid';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { AUTHORS } from "./utils/constants";
 import { store } from "./store";
@@ -14,14 +15,16 @@ import "./App.scss";
 const dummyMessages = {
   chat1: [
       {
-          author: AUTHORS.user,
-          text: "Hello friends!",
+        id: "mes1",
+        author: AUTHORS.user,
+        text: "Hello friends!",
       },
   ],
   chat2: [
       {
-          author: AUTHORS.user,
-          text: "Great news!",
+        id: "mes2",
+        author: AUTHORS.user,
+        text: "Great news!",
       },
   ],
   chat3: [],
@@ -49,6 +52,28 @@ export const App = () => {
   const [messages, setMessages] = useState(dummyMessages);
   const [chatList, setChatList] = useState(initialChatList);
   
+  const handleAddChat = useCallback((name) => {
+    const newId = `chat${uuidv4()}`;
+
+    setChatList((prevChatList) => [...prevChatList, { name, id: newId }]);
+    setMessages((prevMessages) => ({
+      ...prevMessages,
+      [newId]: [],
+    }));
+  }, []);
+
+  const handleDeleteChat = useCallback((idToDelete) => {
+    setChatList((prevChatList) =>
+      prevChatList.filter(({ id }) => id !== idToDelete)
+    );
+    setMessages((prevMessages) => {
+      const newMessages = { ...prevMessages };
+      delete newMessages[idToDelete];
+
+      return newMessages;
+    });
+  }, []);
+
   return (
     <Provider store={store}>
       <BrowserRouter>
@@ -72,8 +97,28 @@ export const App = () => {
           <Route path="/" element={<HomePage />} />
           <Route path="profile" element={<Profile />} />
           <Route path="chats">
-            <Route index element={<ChatList chatList={chatList} />} />
-            <Route path=":chatId" element={<Chats />} />
+            <Route 
+              index 
+              element={
+                <ChatList 
+                  addChat={handleAddChat}
+                  deleteChat={handleDeleteChat}
+                  chatList={chatList} 
+                />
+              } 
+            />
+            <Route 
+              path=":chatId" 
+              element={
+                <Chats 
+                  chatList={chatList}
+                  messages={messages}
+                  setMessages={setMessages}
+                  addChat={handleAddChat}
+                  deleteChat={handleDeleteChat}
+                />
+              } 
+            />
           </Route>
           <Route path="*" element={<h3>404</h3>} />
         </Routes>

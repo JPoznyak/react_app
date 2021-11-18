@@ -7,53 +7,21 @@ import { v4 as uuidv4 } from 'uuid';
 import "./chats.scss";
 import { Navigate, useParams} from "react-router";
 import { Container } from 'react-bootstrap';
+import { Button } from "../Button/Button";
 
-const dummyMessages = {
-    chat1: [
-        {
-            author: AUTHORS.user,
-            text: "Hello friends!",
+function Chats({ chatList, messages, setMessages, deleteChat, addChat }) {
+    const { chatId } = useParams();  
+
+    const parentRef = useRef();
+
+    const handleSendMessage = useCallback((newMessage) => {
+        setMessages((prevMessages) => ({
+            ...prevMessages,
+            [chatId]: [...prevMessages[chatId], newMessage],
+        }));
         },
-    ],
-    chat2: [
-        {
-            author: AUTHORS.user,
-            text: "Great news!",
-        },
-    ],
-    chat3: [],
-};
-
-const initialChatList = [
-    {
-      name: "Cras justo odio",
-      id: "chat1",
-    },
-    {
-      name: "Morbi leo risus",
-      id: "chat2",
-    },
-    {
-      name: "Porta ac consectetur ac",
-      id: "chat3",
-    },
-  ];
-
-function Chats() {
-  const { chatId } = useParams();
-
-  const [messages, setMessages] = useState(dummyMessages);
-  const [chatList, setChatList] = useState(initialChatList);
-  const parentRef = useRef();
-
-  const handleSendMessage = useCallback((newMessage) => {
-      setMessages((prevMessages) => ({
-        ...prevMessages,
-        [chatId]: [...prevMessages[chatId], newMessage],
-      }));
-    },
-    [chatId]
-  );
+        [chatId]
+    );
 
   useEffect(() => {
     if (
@@ -85,8 +53,13 @@ function Chats() {
     <>
     <Title />
     <div className="App" ref={parentRef}>
-        <ChatList chatList={chatList} />
+        <ChatList 
+            chatList={chatList}
+            addChat={addChat}
+            deleteChat={deleteChat}
+        />
         <div>
+            {/* <Button draw={(text) => <span>{text}</span>} /> */}
             <Form sendMessage={handleSendMessage} />
             <MessageList messages={messages[chatId]} />
         </div>

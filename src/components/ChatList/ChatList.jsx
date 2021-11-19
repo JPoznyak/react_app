@@ -20,6 +20,7 @@ export const ChatList = ({ chatList, addChat, deleteChat }) => {
       };
 
     return (
+
         <Container>
             <h4 className="chatsTitle">List of chats</h4>
             <form className="list" onSubmit={handleSubmit}>
@@ -31,52 +32,10 @@ export const ChatList = ({ chatList, addChat, deleteChat }) => {
                 />
                 <button className="add-btn">Add chat</button>
             </form>
-
-
-
-
             <ListGroup className="list" variant="flush">
                 {chatList.map((chat) => (
                     <ChatItem key={chat.id} chat={chat} deleteChat={deleteChat} />
-                   
-                // <>
-                // <ListGroup.Item className="group">
-                //     <NavLink
-                //         style={({ isActive }) => ({ color: isActive ? "#a83d3d" : "#5c4a4a" })}
-                //         to={`/chats/${chat.id}`}
-                //     >
-                //         {chat.name}
-                //     </NavLink>
-                //     <button className="del-btn" onClick={() => {}}>Delete</button>
-                //     {/* <Button type="submit" onClick={() => {}}>
-                //     Delete
-                //     </Button> */}
-                // </ListGroup.Item>
-                // </>
                 ))}
             </ListGroup>
-
-    
-
-
         </Container>
     )}
-
-    // return (
-    //     <div>
-    //       <h3>List of chats</h3>
-    //       <ul>
-    //         {chatList.map((chat) => (
-    //           <li key={chat.id}>
-    //             <ChatItem chat={chat} onDeleteChat={onDeleteChat} />
-    //           </li>
-    //         ))}
-    //       </ul>
-    //       <form onSubmit={handleSubmit}>
-    //         <TextField value={value} onChange={handleChange} />
-    //         <button>Add chat</button>
-    //       </form>
-    //     </div>
-    //   );
-
-

@@ -1,11 +1,14 @@
 import { ListGroup, FormControl} from 'react-bootstrap';
+import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { deleteChat } from "../../store/chats/actions";
 import "./chat-item.scss";
 
-export const ChatItem = ({ chat, deleteChat }) => {
-  const handleDeleteClick = () => {
-    deleteChat(chat.id);
-  };
+export const ChatItem = ({ chat }) => {
+    const dispatch = useDispatch();
+    const handleDeleteClick = () => {
+        dispatch(deleteChat(chat.id));
+};
 
   return (
     <>

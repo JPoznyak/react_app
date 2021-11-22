@@ -1,15 +1,18 @@
 import React, { useState, useCallback } from "react";
-import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router";
+import { BrowserRouter, Link } from "react-router-dom";
 import { Provider } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ChatList } from "./components/ChatList/ChatList";
 import Chats from "./components/Chats/Chats";
+import { ConnectedChats } from "./components/Chats/Chats";
 import { HomePage } from "./components/Home/HomePage";
 import { v4 as uuidv4 } from 'uuid';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { AUTHORS } from "./utils/constants";
 import { store } from "./store";
 import { Profile } from "./components/Profile";
-
+import { addChat, deleteChat } from "./store/chats/actions";
 import "./App.scss";
 
 const dummyMessages = {
@@ -30,42 +33,45 @@ const dummyMessages = {
   chat3: [],
 };
 
-const initialChatList = [
-  {
-    name: "Cras justo odio",
-    id: "chat1",
-  },
-  {
-    name: "Morbi leo risus",
-    id: "chat2",
-  },
-  {
-    name: "Porta ac consectetur ac",
-    id: "chat3",
-  },
-];
-
+// const initialChatList = [
+//   {
+//     name: "Cras justo odio",
+//     id: "chat1",
+//   },
+//   {
+//     name: "Morbi leo risus",
+//     id: "chat2",
+//   },
+//   {
+//     name: "Porta ac consectetur ac",
+//     id: "chat3",
+//   },
+// ];
 
 export const App = () => {
-
+    // const [chatList, setChatList] = useState(initialChatList);
+    const chatList = useSelector((state) => state.chats);
+    const dispatch = useDispatch();
+    const [messages, setMessages] = useState(dummyMessages);
   
-  const [messages, setMessages] = useState(dummyMessages);
-  const [chatList, setChatList] = useState(initialChatList);
+    const handleAddChat = useCallback((name) => {
+      const newId = `chat${uuidv4()}`;
   
-  const handleAddChat = useCallback((name) => {
-    const newId = `chat${uuidv4()}`;
-
-    setChatList((prevChatList) => [...prevChatList, { name, id: newId }]);
-    setMessages((prevMessages) => ({
-      ...prevMessages,
-      [newId]: [],
-    }));
-  }, []);
+        // setChatList((prevChatList) => [...prevChatList, ]);
+        dispatch(addChat({ name, id: newId }));
+        setMessages((prevMessages) => ({
+          ...prevMessages,
+          [newId]: [],
+        }));
+      },
+      [dispatch]
+    );
 
   const handleDeleteChat = useCallback((idToDelete) => {
-    setChatList((prevChatList) =>
-      prevChatList.filter(({ id }) => id !== idToDelete)
-    );
+    // setChatList((prevChatList) =>
+    //   prevChatList.filter(({ id }) => id !== idToDelete)
+    // );
+    dispatch(deleteChat(idToDelete));
     setMessages((prevMessages) => {
       const newMessages = { ...prevMessages };
       delete newMessages[idToDelete];
@@ -101,22 +107,23 @@ export const App = () => {
               index 
               element={
                 <ChatList 
-                  addChat={handleAddChat}
-                  deleteChat={handleDeleteChat}
-                  chatList={chatList} 
+                  // addChat={handleAddChat}
+                  // deleteChat={handleDeleteChat}
+                  // chatList={chatList} 
                 />
               } 
             />
             <Route 
               path=":chatId" 
               element={
-                <Chats 
-                  chatList={chatList}
-                  messages={messages}
-                  setMessages={setMessages}
-                  addChat={handleAddChat}
-                  deleteChat={handleDeleteChat}
-                />
+                <ConnectedChats />
+                // <Chats 
+                //   chatList={chatList}
+                //   messages={messages}
+                //   setMessages={setMessages}
+                //   addChat={handleAddChat}
+                //   deleteChat={handleDeleteChat}
+                // />
               } 
             />
           </Route>

@@ -7,37 +7,21 @@ import { v4 as uuidv4 } from 'uuid';
 import "./chats.scss";
 import { Navigate, useParams} from "react-router";
 import { Container } from 'react-bootstrap';
+import { Button } from "../Button/Button";
 
-const dummyData = {
-    chat1: [
-        {
-            author: AUTHORS.user,
-            text: "Hello friends!",
+function Chats({ chatList, messages, setMessages, deleteChat, addChat }) {
+    const { chatId } = useParams();  
+
+    const parentRef = useRef();
+
+    const handleSendMessage = useCallback((newMessage) => {
+        setMessages((prevMessages) => ({
+            ...prevMessages,
+            [chatId]: [...prevMessages[chatId], newMessage],
+        }));
         },
-    ],
-    chat2: [
-        {
-            author: AUTHORS.user,
-            text: "Great news!",
-        },
-    ],
-    chat3: [],
-};
-
-function Chats() {
-  const { chatId } = useParams();
-
-  const [messages, setMessages] = useState(dummyData);
-  const parentRef = useRef();
-
-  const handleSendMessage = useCallback((newMessage) => {
-      setMessages((prevMessages) => ({
-        ...prevMessages,
-        [chatId]: [...prevMessages[chatId], newMessage],
-      }));
-    },
-    [chatId]
-  );
+        [chatId]
+    );
 
   useEffect(() => {
     if (
@@ -69,8 +53,13 @@ function Chats() {
     <>
     <Title />
     <div className="App" ref={parentRef}>
-        <ChatList />
+        <ChatList 
+            chatList={chatList}
+            addChat={addChat}
+            deleteChat={deleteChat}
+        />
         <div>
+            {/* <Button draw={(text) => <span>{text}</span>} /> */}
             <Form sendMessage={handleSendMessage} />
             <MessageList messages={messages[chatId]} />
         </div>

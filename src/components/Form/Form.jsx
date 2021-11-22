@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AUTHORS } from '../../utils/constants';
 import { Button } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
-import { Input } from '../Input/Input';
+// import { Input } from '../Input/Input';
 
 export const Form = ({ sendMessage }) => {
   const [value, setValue] = useState("");

@@ -1,4 +1,4 @@
-import { ListGroup, FormControl} from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { deleteChat } from "../../store/chats/actions";

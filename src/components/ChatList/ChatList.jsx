@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addChat } from "../../store/chats/actions";
 import { selectChats } from "../../store/chats/selectors";
 import { ListGroup, FormControl} from 'react-bootstrap';
-import { NavLink } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
-// import { Button } from '../Button/Button';
 import { Container } from 'react-bootstrap';
 import { ChatItem } from "../ChatItem";
 import "./chatList.scss";
@@ -40,10 +38,6 @@ export const ChatList = () => {
                 />
                 <button className="add-btn">Add chat</button>
             </form>
-
-
-
-
             <ListGroup className="list" variant="flush">
                 {chatList.map((chat) => (
                     <ChatItem key={chat.id} chat={chat} />

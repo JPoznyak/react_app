@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback} from "react";
+import { useEffect, useCallback} from "react";
 import { Form } from "../Form/Form";
 import { MessageList } from "../MessageList/MessageList";
 import { ChatList } from "../ChatList/ChatList";
@@ -7,29 +7,19 @@ import { v4 as uuidv4 } from 'uuid';
 import "./chats.scss";
 import { Navigate, useParams} from "react-router";
 import { Container } from 'react-bootstrap';
-import { Button } from "../Button/Button";
-import { connect, useDispatch, useSelector } from "react-redux";
-import {
-  createSelectMessagesForChat,
-  selectMessages,
-  selectMessagesForChat,
-} from "../../store/messages/selectors";
+import { useDispatch, useSelector } from "react-redux";
+import { selectMessages } from "../../store/messages/selectors";
 import { addMessage } from "../../store/messages/actions";
 
-// function Chats({ chatList, messages, setMessages, deleteChat, addChat }) {
-//     const { chatId } = useParams(); 
-    
-function Chats({ messages, sendMessage }) {
+function Chats() {
     const { chatId } = useParams();
-
-    // const parentRef = useRef();
+    const messages = useSelector(selectMessages);
+    const dispatch = useDispatch;
 
     const handleSendMessage = useCallback(
         (newMessage) => {
-          // dispatch(addMessage(chatId, newMessage));
-          sendMessage(chatId, newMessage);
-        },
-        [chatId, sendMessage]
+          dispatch(addMessage(chatId, newMessage));
+        }, [chatId]
       );
 
   useEffect(() => {
@@ -41,7 +31,7 @@ function Chats({ messages, sendMessage }) {
         handleSendMessage({
             author: AUTHORS.bot,
             text: "Hi Bro, I am a bot",
-            id: uuidv4()
+            id: uuidv4(),
           }),
         2000
       );
@@ -62,11 +52,7 @@ function Chats({ messages, sendMessage }) {
     <>
     <Title />
     <div className="App">
-        <ChatList 
-            // chatList={chatList}
-            // addChat={addChat}
-            // deleteChat={deleteChat}
-        />
+        <ChatList />
         <div>
             <Form sendMessage={handleSendMessage} />
             <MessageList messages={messages[chatId]} />
@@ -78,16 +64,3 @@ function Chats({ messages, sendMessage }) {
 }
 
 export default Chats;
-
-const mapStateToProps = (state) => ({
-    messages: state.messages,
-  });
-  
-  const mapDispatchToProps = {
-    sendMessage: addMessage,
-  };
-  
-  export const ConnectedChats = connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Chats);

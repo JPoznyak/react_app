@@ -18,30 +18,30 @@ function Chats() {
 
     const handleSendMessage = useCallback(
         (newMessage) => {
-          dispatch(addMessage(chatId, newMessage));
+            dispatch(addMessage(chatId, newMessage));
         }, [chatId]
-      );
+        );
 
-  useEffect(() => {
-    if (
-      messages[chatId]?.length &&
-      messages[chatId]?.[messages[chatId]?.length - 1].author !== AUTHORS.bot) {
-      const timeout = setTimeout(
-        () =>
-        handleSendMessage({
-            author: AUTHORS.bot,
-            text: "Hi Bro, I am a bot",
-            id: uuidv4(),
-          }),
-        2000
-      );
-      return () => clearTimeout(timeout);
+    useEffect(() => {
+        if (
+        messages[chatId]?.length &&
+        messages[chatId]?.[messages[chatId]?.length - 1].author !== AUTHORS.bot) {
+        const timeout = setTimeout(
+            () =>
+            handleSendMessage({
+                author: AUTHORS.bot,
+                text: "Hi Bro, I am a bot",
+                id: uuidv4(),
+            }),
+            2000
+        );
+        return () => clearTimeout(timeout);
+        }
+    }, [messages]);
+
+    if (!messages[chatId]) {
+        return <Navigate replace to="/chats" />;
     }
-  }, [messages]);
-
-  if (!messages[chatId]) {
-    return <Navigate replace to="/chats" />;
-  }
 
   const Title = () => {
         return <p className="title">My awesome chat app</p>

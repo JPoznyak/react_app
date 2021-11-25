@@ -1,15 +1,15 @@
-import { useEffect, useCallback} from "react";
+import { useCallback} from "react";
 import { Form } from "../Form/Form";
 import { MessageList } from "../MessageList/MessageList";
 import { ChatList } from "../ChatList/ChatList";
-import { AUTHORS } from "../../utils/constants";
-import { v4 as uuidv4 } from 'uuid';
+// import { AUTHORS } from "../../utils/constants";
+// import { v4 as uuidv4 } from 'uuid';
 import "./chats.scss";
 import { Navigate, useParams} from "react-router";
 import { Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from "react-redux";
 import { selectMessages } from "../../store/messages/selectors";
-import { addMessage } from "../../store/messages/actions";
+import { addMessageWithReply } from "../../store/messages/actions";
 
 function Chats() {
     const { chatId } = useParams();
@@ -18,26 +18,26 @@ function Chats() {
 
     const handleSendMessage = useCallback(
         (newMessage) => {
-            dispatch(addMessage(chatId, newMessage));
+            dispatch(addMessageWithReply(chatId, newMessage));
         }, [chatId]
-        );
+    );
 
-    useEffect(() => {
-        if (
-        messages[chatId]?.length &&
-        messages[chatId]?.[messages[chatId]?.length - 1].author !== AUTHORS.bot) {
-        const timeout = setTimeout(
-            () =>
-            handleSendMessage({
-                author: AUTHORS.bot,
-                text: "Hi Bro, I am a bot",
-                id: uuidv4(),
-            }),
-            2000
-        );
-        return () => clearTimeout(timeout);
-        }
-    }, [messages]);
+    // useEffect(() => {
+    //     if (
+    //     messages[chatId]?.length &&
+    //     messages[chatId]?.[messages[chatId]?.length - 1].author !== AUTHORS.bot) {
+    //     const timeout = setTimeout(
+    //         () =>
+    //         handleSendMessage({
+    //             author: AUTHORS.bot,
+    //             text: "Hi Bro, I am a bot",
+    //             id: uuidv4(),
+    //         }),
+    //         2000
+    //     );
+    //     return () => clearTimeout(timeout);
+    //     }
+    // }, [messages]);
 
     if (!messages[chatId]) {
         return <Navigate replace to="/chats" />;

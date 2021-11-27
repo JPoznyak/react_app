@@ -54,7 +54,7 @@ function Chats() {
     <div className="App">
         <ChatList />
         <div>
-            <Form sendMessage={handleSendMessage} />
+            <Form onSendMessage={handleSendMessage} />
             <MessageList messages={messages[chatId]} />
         </div>
     </div>

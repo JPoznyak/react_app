@@ -14,7 +14,7 @@ import { addMessageWithReply } from "../../store/messages/actions";
 function Chats() {
     const { chatId } = useParams();
     const messages = useSelector(selectMessages);
-    const dispatch = useDispatch;
+    const dispatch = useDispatch();
 
     const handleSendMessage = useCallback(
         (newMessage) => {

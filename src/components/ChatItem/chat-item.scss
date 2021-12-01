@@ -1,0 +1,15 @@
+.del-btn {
+    float: right;
+    height: 30px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    background-color: light-grey;
+    color: grey;
+}
+
+.group {
+    display: flex;
+    justify-content: space-between;
+    background: transparent;
+    padding: 20px 0px;
+}

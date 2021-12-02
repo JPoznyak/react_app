@@ -1,15 +1,54 @@
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router";
 import { BrowserRouter, Link } from "react-router-dom";
 import { ChatList } from "../ChatList/ChatList";
-import Chats from "../Chats/Chats";
+import  Chats  from "../Chats/Chats";
 import { HomePage } from "../Home/HomePage";
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import { Profile } from "../Profile";
 import { Articles } from "../Articles";
+import { PrivateRoute } from "../PrivateRoute";
+import { PublicOutlet } from "../PublicRoute";
+import { SignUp } from "../SignUp";
+import { onValue } from "firebase/database";
+import { auth, messagesRef } from "../../services/firebase";
+import { signIn, signOut } from "../../store/profile/actions";
 import "./router.scss";
 
-export const Router = () => (
-    <BrowserRouter>
+export const Router = () => {
+    const dispatch = useDispatch();
+    // const [msgs, setMsgs] = useState({});
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+            dispatch(signIn());
+        } else {
+            dispatch(signOut());
+        }
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    useEffect(() => {
+        onValue(messagesRef, (snapshot) => {
+        const newMsgs = {};
+
+        snapshot.forEach((chatMsgsSnap) => {
+            newMsgs[chatMsgsSnap.key] = Object.values(
+            chatMsgsSnap.val().messageList || {}
+            );
+        });
+
+        // setMsgs(newMsgs);
+        });
+    }, []);
+
+    
+    return (
+        <BrowserRouter>
       <Navbar className="menu" bg="light" variant="light">
           <Container>
             <Nav>
@@ -30,24 +69,34 @@ export const Router = () => (
       </Navbar> 
 
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="/" element={<PublicOutlet /> }>
+            <Route path="" element={<HomePage />} />
+        </Route>
+        <Route path="/signup" element={<PublicOutlet />}>
+          <Route path="" element={<SignUp />} />
+        </Route>
+        <Route path="profile" element={<PrivateRoute><Profile /> </PrivateRoute>} />
         <Route path="articles" element={<Articles />} />
         <Route path="chats">
           <Route 
             index 
             element={
-              <ChatList />
+                <PrivateRoute>
+                    <ChatList />
+                </PrivateRoute>
             } 
-          />
+            />
           <Route 
             path=":chatId" 
             element={
-              <Chats />
+                <PrivateRoute>
+                    <Chats />
+                </PrivateRoute>
             } 
-          />
+            />
         </Route>
         <Route path="*" element={<h3>404</h3>} />
       </Routes>
     </BrowserRouter>
 );
+}

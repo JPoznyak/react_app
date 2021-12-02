@@ -1,17 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addChat } from "../../store/chats/actions";
+import { addChat, addChatWithFb, initChatsTracking } from "../../store/chats/actions";
 import { selectChats } from "../../store/chats/selectors";
+import { onValue, set } from "firebase/database";
 import { ListGroup, FormControl} from 'react-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 import { Container } from 'react-bootstrap';
 import { ChatItem } from "../ChatItem";
-import "./chatList.scss";
+import {
+    chatsRef,
+    getChatMsgsRefById,
+    getChatRefById,
+} from "../../services/firebase";
+  import "./chatList.scss";
 
 export const ChatList = () => {
     const chatList = useSelector(selectChats);
     const dispatch = useDispatch();
     const [value, setValue] = useState("");
+
+    useEffect(() => {
+        dispatch(initChatsTracking());
+      }, []);    
 
     const handleChange = (e) => {
         setValue(e.target.value);
@@ -21,7 +31,7 @@ export const ChatList = () => {
     e.preventDefault();
 
     const newId = `chat${uuidv4()}`;
-    dispatch(addChat({ name: value, id: newId }));
+    dispatch(addChatWithFb({ name: value, id: newId }));
 
     setValue("");
     };

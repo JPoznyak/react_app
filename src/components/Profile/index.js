@@ -1,30 +1,65 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { toggleCheckbox } from "../../store/profile/actions";
+import React, { useCallback, useEffect, useState } from "react";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { toggleCheckbox, changeName, signOut } from "../../store/profile/actions";
 import { Container, Form } from "react-bootstrap";
+import { onValue, set } from "firebase/database";
+import { logOut, userRef } from "../../services/firebase";
+import { selectName } from "../../store/profile/selectors";
 import './profile.scss'
 
-export const Profile = () => {
+export const Profile = ({ checkboxValue, setName, changeChecked }) => {
   // const state = store.getState();
-  const checkboxValue = useSelector(state => state.checkbox);
+  // const checkboxValue = useSelector(state => state.checkbox);
   const name = useSelector(state => state.name);
+  const [value, setValue] = useState(name);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const unsubscribe = onValue(userRef, (snapshot) => {
+      const userData = snapshot.val();
+      setName(userData?.name || "");
+    });
+
+    return unsubscribe;
+  }, [setName]);
 
   const checkboxChange = () => {
     dispatch(toggleCheckbox);
   }
 
+  const handleChangeText = (e) => {
+    setValue(e.target.value);
+  };
+
+  const handleChange = () => {
+    console.log("------");
+    changeChecked();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    set(userRef, {
+      name: value,
+    });
+  };
+
+  const handleLogOutClick = async () => {
+    try {
+      await logOut();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <Container>
       <h3>Profile</h3>
-      <Form.Group className="checkbox mb-3">
-        <Form.Check 
-            type="checkbox"
-            checked={checkboxValue} 
-            onChange={checkboxChange} 
-            label={name} />
-        </Form.Group>
+      <input type="checkbox" checked={checkboxValue} onChange={handleChange} />
+      <form onSubmit={handleSubmit}>
+        <input type="text" value={value} onChange={handleChangeText} />
+        <input type="submit" />
+      </form>
+      <button onClick={handleLogOutClick}>SIGN OUT</button>
     </Container>
   );
 };

@@ -7,15 +7,15 @@ import { ChatList } from "../ChatList/ChatList";
 // import { v4 as uuidv4 } from 'uuid';
 import { Navigate, useParams} from "react-router";
 import { Container } from 'react-bootstrap';
-import { useDispatch, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { selectMessages } from "../../store/messages/selectors";
 import { addMessageWithReply } from "../../store/messages/actions";
 import { getChatMsgsListRefById, getChatMsgsRefById } from "../../services/firebase";
 import "./chats.scss";
 
-function Chats({ message }) {
+function Chats({ msgs, sendMessage }) {
     const { chatId } = useParams();
-    const messages = useSelector(selectMessages);
+    // const messages = useSelector(selectMessages);
     // const dispatch = useDispatch();
 
     const handleSendMessage = useCallback(
@@ -25,7 +25,7 @@ function Chats({ message }) {
             // dispatch(addMessageWithReply(chatId, newMessage));
             push(getChatMsgsListRefById(chatId), newMessage);
 
-        }, [chatId, addMessageWithReply]
+        }, [chatId, sendMessage]
     );
 
     // useEffect(() => {
@@ -45,7 +45,7 @@ function Chats({ message }) {
     //     }
     // }, [messages]);
 
-    if (!messages[chatId]) {
+    if (!msgs[chatId]) {
         return <Navigate replace to="/chats" />;
     }
 
@@ -61,7 +61,7 @@ function Chats({ message }) {
         <ChatList />
         <div>
             <Form onSendMessage={handleSendMessage} />
-            <MessageList messages={messages[chatId]} />
+            <MessageList messages={msgs[chatId]} />
         </div>
     </div>
     </>
@@ -70,3 +70,16 @@ function Chats({ message }) {
 }
 
 export default Chats;
+
+const mapStateToProps = (state) => ({
+    messages: state.messages,
+  });
+  
+  const mapDispatchToProps = {
+    sendMessage: addMessageWithReply,
+  };
+  
+  export const ConnectedChats = connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Chats);

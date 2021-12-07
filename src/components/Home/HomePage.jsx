@@ -27,7 +27,7 @@ export const HomePage = () => {
   return (
     <>
       <h3>Wellcome To My Chat App</h3>
-      <SignForm className="sign" onSubmit={handleSignIn} error={error} loading={loading} />
+      <SignForm onSubmit={handleSignIn} error={error} loading={loading} />
       <Link to="/signup">Sign Up</Link>
     </>
   );

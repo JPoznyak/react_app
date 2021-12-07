@@ -3,10 +3,10 @@ import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router";
 import { BrowserRouter, Link } from "react-router-dom";
 import { ChatList } from "../ChatList/ChatList";
-import  Chats  from "../Chats/Chats";
+import { ConnectedChats } from "../Chats/Chats";
 import { HomePage } from "../Home/HomePage";
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { Profile } from "../Profile";
+import { ConnectedProfile } from "../Profile";
 import { Articles } from "../Articles";
 import { PrivateRoute } from "../PrivateRoute";
 import { PublicOutlet } from "../PublicRoute";
@@ -18,7 +18,7 @@ import "./router.scss";
 
 export const Router = () => {
     const dispatch = useDispatch();
-    // const [msgs, setMsgs] = useState({});
+    const [msgs, setMsgs] = useState({});
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -42,7 +42,7 @@ export const Router = () => {
             );
         });
 
-        // setMsgs(newMsgs);
+        setMsgs(newMsgs);
         });
     }, []);
 
@@ -75,7 +75,7 @@ export const Router = () => {
         <Route path="/signup" element={<PublicOutlet />}>
           <Route path="" element={<SignUp />} />
         </Route>
-        <Route path="profile" element={<PrivateRoute><Profile /> </PrivateRoute>} />
+        <Route path="profile" element={<PrivateRoute><ConnectedProfile /> </PrivateRoute>} />
         <Route path="articles" element={<Articles />} />
         <Route path="chats">
           <Route 
@@ -90,7 +90,7 @@ export const Router = () => {
             path=":chatId" 
             element={
                 <PrivateRoute>
-                    <Chats />
+                    <ConnectedChats msgs={msgs} />
                 </PrivateRoute>
             } 
             />

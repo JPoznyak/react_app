@@ -18,36 +18,6 @@ export const Articles = () => {
     dispatch(getArticles());
   };
 
-// const [articles, setArticles] = useState([]);
-// const [error, setError] = useState(false);
-// const [loading, setLoading] = useState(false);
-
-
-
-// const requestData = async () => {
-//     setLoading(true);
-//     try {
-//         const response = await fetch(apiUrl);
-//         console.log(response);
-        
-//         if (!response.ok) {
-//             throw new Error(`Request failed with status ${response.status}`);
-//         }
-
-//         const result = await response.json();
-    
-//         setError(false);
-//         setArticles(result);
-//     }
-//     catch (err) {
-//         console.warn(err);
-//         setError(true);
-//     }
-//     finally {
-//         setLoading(false);
-//     }
-// }
-
 useEffect(() => {
     requestData();
 }, []);

@@ -1,11 +1,12 @@
 import React from "react";
 import "./message.scss";
 
-export const Message = ({ message, onMessageClick }) => {
+export const Message = ({ message }) => {
 
   return (
-    <h3 onClick={onMessageClick}>
-      {message}
-    </h3>
+    <div>
+      <span>{message.author}:</span>
+      <span>{message.text}</span>
+    </div>
   );
 };

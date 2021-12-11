@@ -1,7 +1,7 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useSelector, useDispatch, connect, shallowEqual } from "react-redux";
-import { toggleCheckbox, changeName, signOut } from "../../store/profile/actions";
-import { Container, Form } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { useSelector, connect, shallowEqual } from "react-redux";
+import { toggleCheckbox, changeName } from "../../store/profile/actions";
+import { Container } from "react-bootstrap";
 import { onValue, set } from "firebase/database";
 import { logOut, userRef } from "../../services/firebase";
 import { selectName } from "../../store/profile/selectors";
@@ -12,7 +12,7 @@ export const Profile = ({ checkboxValue, setName, changeChecked }) => {
   // const checkboxValue = useSelector(state => state.checkbox);
   const name = useSelector(selectName, shallowEqual);
   const [value, setValue] = useState(name);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
     const unsubscribe = onValue(userRef, (snapshot) => {
@@ -22,10 +22,6 @@ export const Profile = ({ checkboxValue, setName, changeChecked }) => {
 
     return unsubscribe;
   }, [setName]);
-
-  const checkboxChange = () => {
-    dispatch(toggleCheckbox);
-  }
 
   const handleChangeText = (e) => {
     setValue(e.target.value);
@@ -73,10 +69,6 @@ const mapDispatchToProps = (dispatch) => ({
   setName: (newName) => dispatch(changeName(newName)),
   // logOut: () => dispatch(signOut()),
 });
-
-const mapDispatchToProps2 = {
-  setName: changeName,
-};
 
 export const ConnectedProfile = connect(
   mapStateToProps,

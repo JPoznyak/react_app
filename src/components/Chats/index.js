@@ -1,16 +1,16 @@
 import { useCallback} from "react";
 import { push } from "firebase/database";
-import { Form } from "../Form/Form";
-import { MessageList } from "../MessageList/MessageList";
-import { ChatList } from "../ChatList/ChatList";
+import { Form } from "../Form";
+import { MessageList } from "../MessageList";
+import { ChatList } from "../ChatList";
 // import { AUTHORS } from "../../utils/constants";
 // import { v4 as uuidv4 } from 'uuid';
 import { Navigate, useParams} from "react-router";
 import { Container } from 'react-bootstrap';
-import { connect, useDispatch, useSelector } from "react-redux";
-import { selectMessages } from "../../store/messages/selectors";
+import { connect } from "react-redux";
+// import { selectMessages } from "../../store/messages/selectors";
 import { addMessageWithReply } from "../../store/messages/actions";
-import { getChatMsgsListRefById, getChatMsgsRefById } from "../../services/firebase";
+import { getChatMsgsListRefById } from "../../services/firebase";
 import "./chats.scss";
 
 function Chats({ msgs, sendMessage }) {

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addChat, addChatWithFb, initChatsTracking } from "../../store/chats/actions";
+import { addChatWithFb, initChatsTracking } from "../../store/chats/actions";
 import { selectChats } from "../../store/chats/selectors";
-import { onValue, set } from "firebase/database";
+// import { onValue, set } from "firebase/database";
 import { ListGroup, FormControl} from 'react-bootstrap';
 import { v4 as uuidv4 } from 'uuid';
 import { Container } from 'react-bootstrap';
 import { ChatItem } from "../ChatItem";
-import {
-    chatsRef,
-    getChatMsgsRefById,
-    getChatRefById,
-} from "../../services/firebase";
+// import {
+//     chatsRef,
+//     getChatMsgsRefById,
+//     getChatRefById,
+// } from "../../services/firebase";
   import "./chatList.scss";
 
 export const ChatList = () => {
@@ -21,7 +21,7 @@ export const ChatList = () => {
 
     useEffect(() => {
         dispatch(initChatsTracking());
-      }, []);    
+      });    
 
     const handleChange = (e) => {
         setValue(e.target.value);

@@ -20,7 +20,7 @@ export const Articles = () => {
 
 useEffect(() => {
     requestData();
-}, []);
+});
 
 return (
     <>

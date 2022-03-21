@@ -4,9 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { AUTHORS } from '../../utils/constants';
 import { Button } from 'react-bootstrap';
 import { FormControl } from 'react-bootstrap';
-import { Input } from '../Input/Input';
 
-export const Form = ({ sendMessage }) => {
+export const Form = ({ onSendMessage }) => {
   const [value, setValue] = useState("");
   const inputRef = useRef();
 
@@ -16,7 +15,7 @@ export const Form = ({ sendMessage }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendMessage({
+    onSendMessage({
         id: uuidv4(),
         author: AUTHORS.user,
         text: value,
@@ -33,7 +32,7 @@ return (
     <form onSubmit={handleSubmit}>
         <FormControl className="text-field" value={value} onChange={handleChange} />
         <Button className="my-btn" type="submit">
-        Send
+          Send
         </Button>
     </form>
   );
